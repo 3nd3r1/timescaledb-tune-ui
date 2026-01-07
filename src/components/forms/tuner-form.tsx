@@ -43,7 +43,6 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
             memory: "",
             cpus: "",
             profile: "default",
-            dryRun: true,
         },
     });
 
@@ -140,24 +139,6 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                             )}
                         />
 
-                        <div className="flex items-center space-x-2">
-                            <input
-                                type="checkbox"
-                                id="dryRun"
-                                checked={form.watch("dryRun")}
-                                onChange={(e) =>
-                                    form.setValue("dryRun", e.target.checked)
-                                }
-                                className="rounded"
-                            />
-                            <label
-                                htmlFor="dryRun"
-                                className="text-sm font-medium"
-                            >
-                                Dry run (preview only, don&apos;t apply changes)
-                            </label>
-                        </div>
-
                         <Button
                             type="submit"
                             className="w-full"
@@ -165,7 +146,7 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                         >
                             {isLoading
                                 ? "Generating..."
-                                : "Generate Configuration"}
+                                : "Generate"}
                         </Button>
                     </form>
                 </Form>

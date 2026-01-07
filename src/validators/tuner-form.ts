@@ -20,8 +20,6 @@ export const tunerFormSchema = z.object({
     profile: z.enum(["default", "promscale"], {
         required_error: "Please select a tuning profile",
     }),
-
-    dryRun: z.boolean().default(true),
 });
 
 export type TunerFormData = z.infer<typeof tunerFormSchema>;
