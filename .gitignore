@@ -43,3 +43,6 @@ coverage/
 # Logs
 logs/
 *.log
+
+# Direnv
+.direnv/
