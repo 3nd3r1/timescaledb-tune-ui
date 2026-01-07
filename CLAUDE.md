@@ -10,8 +10,8 @@ TimescaleDB Tuner UI is a web-based interface for the [timescaledb-tune](https:/
 
 ```bash
 # Development
-npm run dev                 # Start Next.js development server
-npm run docker:dev          # Start with Docker Compose
+npm run dev                 # Start Next.js development server (requires timescaledb-tune)
+npm run docker:dev          # Start with Docker Compose (recommended - includes timescaledb-tune)
 
 # Testing
 npm run test               # Run all tests

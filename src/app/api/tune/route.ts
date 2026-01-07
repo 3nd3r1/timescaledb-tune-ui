@@ -12,17 +12,28 @@ export async function POST(request: NextRequest) {
         const validatedData = tunerFormSchema.parse(body);
 
         // Build the timescaledb-tune command
-        const command = [
+        const commandParts = [
             "timescaledb-tune",
             "--memory",
             `${validatedData.memory}GB`,
             "--cpus",
             validatedData.cpus,
-            "--profile",
-            validatedData.profile,
+            "--pg-version",
+            "16", // Use PostgreSQL 16 as default
+            "--conf-path",
+            "/dev/null", // Use dummy path since we only want the output
+            "--out-path",
+            "/tmp/pg.conf", // Output to temporary file 
             "--dry-run", // Always use dry-run for preview
-            "--quiet", // Reduce verbose output
-        ].join(" ");
+            "--yes", // Auto-answer prompts
+        ];
+        
+        // Only add profile if it's not "default" (which is the default behavior)
+        if (validatedData.profile && validatedData.profile !== "default") {
+            commandParts.push("--profile", validatedData.profile);
+        }
+        
+        const command = commandParts.join(" ");
 
         // Execute the command
         let output;
