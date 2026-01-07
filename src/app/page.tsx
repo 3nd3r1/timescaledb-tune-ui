@@ -6,7 +6,7 @@ export default function Home() {
         <p className="text-lg text-muted-foreground mb-8">
           Optimize your TimescaleDB configuration for better performance
         </p>
-        
+
         <div className="bg-card border rounded-lg p-6">
           <p className="text-muted-foreground">
             Configuration interface coming soon...

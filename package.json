@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . && npx prettier --check .",
-    "lint:fix": "eslint . --fix && npx prettier --write .",
+    "lint:fix": "eslint . --fix",
     "format": "npx prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",

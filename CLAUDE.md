@@ -15,12 +15,13 @@ npm run docker:dev          # Start with Docker Compose
 
 # Testing
 npm run test               # Run all tests
-npm run test:watch         # Run tests in watch mode  
+npm run test:watch         # Run tests in watch mode
 npm run coverage           # Run tests with coverage
 
 # Code Quality
-npm run lint               # Check linting and formatting
-npm run lint:fix           # Auto-fix linting and formatting issues
+npm run lint               # Run ESLint and check Prettier formatting
+npm run lint:fix           # Auto-fix ESLint issues only
+npm run format             # Format code with Prettier
 npm run type-check         # TypeScript type checking
 
 # Production
@@ -35,6 +36,7 @@ npm run docker:down        # Stop Docker containers
 ## Architecture
 
 ### Technology Stack
+
 - **Next.js 15** with App Router and React 19
 - **TypeScript** for type safety
 - **Tailwind CSS** + **shadcn/ui** + **Radix UI** for styling and components
@@ -43,13 +45,14 @@ npm run docker:down        # Stop Docker containers
 - **Framer Motion** for animations
 
 ### Project Structure
+
 ```
 src/
 ├── app/                    # Next.js App Router pages and layouts
 ├── components/             # React components (to be organized as):
 │   ├── ui/                # shadcn/ui base components
 │   ├── forms/             # Form-specific components
-│   ├── display/           # Result display components  
+│   ├── display/           # Result display components
 │   └── layout/            # Layout components
 ├── hooks/                 # Custom React hooks
 ├── lib/                   # Utilities and helpers
@@ -60,12 +63,14 @@ src/
 ### Key Integration Points
 
 **TimescaleDB CLI Integration**: The core functionality involves calling the `timescaledb-tune` CLI tool via Node.js child processes in API routes. The CLI accepts parameters like:
+
 - `--memory`: System memory allocation
 - `--cpus`: Number of CPU cores
 - `--profile`: Tuning profile (default, promscale)
 - `--dry-run`: Preview mode without applying changes
 
-**Form Validation Flow**: 
+**Form Validation Flow**:
+
 1. User inputs system specifications via React Hook Form
 2. Zod schemas validate inputs client-side
 3. API routes process inputs and call timescaledb-tune CLI
@@ -74,6 +79,7 @@ src/
 ### Environment Setup
 
 This project uses Nix for reproducible development environments:
+
 ```bash
 # With direnv (automatic)
 cd timescaledb-tuner-ui
@@ -85,12 +91,14 @@ nix-shell
 ### Component Development
 
 **shadcn/ui Integration**: Use `components.json` for shadcn/ui configuration. Components are configured with:
+
 - Tailwind CSS variables for theming
 - RSC (React Server Components) enabled
 - TypeScript support
 - Path aliases: `@/components` and `@/lib/utils`
 
 **Form Components**: Build around React Hook Form + Zod pattern. Expected form components include:
+
 - System resource inputs (memory, CPU, disk)
 - Configuration file upload/download
 - Tuning profile selection

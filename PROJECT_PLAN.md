@@ -9,6 +9,7 @@ Create a web-based UI for the existing [timescaledb-tune](https://github.com/tim
 ## 🛠️ Technology Stack (Matching Datakolo)
 
 ### Frontend
+
 - **Next.js** (Latest App Router) - Full-stack React framework
 - **TypeScript** - Type safety and better developer experience
 - **Tailwind CSS** - Utility-first CSS framework for rapid UI development
@@ -18,17 +19,20 @@ Create a web-based UI for the existing [timescaledb-tune](https://github.com/tim
 - **Framer Motion** - Animations and transitions
 
 ### Development Tools (Matching Datakolo)
+
 - **ESLint** + **Prettier** - Code formatting and linting
 - **Vitest** - Unit testing framework
 - **Testing Library** - Component testing utilities
 - **PostCSS** - CSS processing
 
 ### Backend/Integration
+
 - **Node.js** API routes (built into Next.js)
 - **Child process** execution for timescaledb-tune CLI integration
 - **File system** handling for configuration file management
 
 ### Deployment & DevOps (Coolify Compatible)
+
 - **Docker** containerization (Alpine-based like datakolo)
 - **Docker Compose** for local development
 - **Makefile** for development commands
@@ -37,6 +41,7 @@ Create a web-based UI for the existing [timescaledb-tune](https://github.com/tim
 ## 📊 Core Features
 
 ### 1. System Configuration Input
+
 - **Memory allocation**: Slider with manual input (GB/MB)
 - **CPU cores**: Number selector
 - **Database profile**: Dropdown (default, promscale)
@@ -45,18 +50,21 @@ Create a web-based UI for the existing [timescaledb-tune](https://github.com/tim
 - **Config file path**: File browser/upload option
 
 ### 2. Tuning Recommendations
+
 - **Side-by-side comparison**: Current vs Recommended settings
 - **Setting explanations**: Tooltip descriptions for each parameter
 - **Impact indicators**: Visual indicators showing expected performance impact
 - **Category grouping**: Memory, CPU, I/O, etc.
 
 ### 3. Configuration Management
+
 - **Preview mode**: Show recommendations before applying
 - **Export options**: Download as .conf file or copy to clipboard
 - **Backup creation**: Automatic backup before applying changes
 - **Validation**: Check for conflicts or invalid values
 
 ### 4. User Experience
+
 - **Responsive design**: Mobile and desktop friendly
 - **Progress indicators**: Show tuning process steps
 - **Error handling**: Clear error messages and recovery options
@@ -85,6 +93,7 @@ timescaledb-tuner-ui/
 ```
 
 ### Component Organization (shadcn/ui + Radix UI)
+
 ```
 src/components/
 ├── ui/                    # shadcn/ui base components
@@ -106,18 +115,21 @@ src/components/
 ## 🎨 UI Design Approach
 
 ### Layout
+
 - **Single-page application** with tabbed sections
 - **Left sidebar**: Configuration inputs
 - **Right panel**: Recommendations and preview
 - **Bottom section**: Actions (apply, export, reset)
 
 ### Design System
+
 - **Clean, professional** aesthetic similar to PGTune
 - **Accessible** color scheme with proper contrast
 - **Consistent spacing** using Tailwind's scale
 - **Interactive elements** with hover and focus states
 
 ### Components
+
 - `TunerForm` - Main configuration form
 - `RecommendationDisplay` - Results panel
 - `ConfigPreview` - Side-by-side comparison
@@ -127,6 +139,7 @@ src/components/
 ## 🔧 Implementation Phases
 
 ### Phase 1: Foundation & Setup
+
 - [ ] Initialize Next.js project with latest dependencies matching datakolo structure
 - [ ] Configure Tailwind CSS, PostCSS, and TypeScript
 - [ ] Set up shadcn/ui components and Radix UI
@@ -135,6 +148,7 @@ src/components/
 - [ ] Set up ESLint, Prettier, and Vitest testing
 
 ### Phase 2: Core Application Structure
+
 - [ ] Create base component structure matching datakolo
 - [ ] Implement form validation with Zod schemas
 - [ ] Set up React Hook Form integration
@@ -142,6 +156,7 @@ src/components/
 - [ ] Build basic layout and routing
 
 ### Phase 3: TimescaleDB Integration
+
 - [ ] Create API routes for timescaledb-tune CLI integration
 - [ ] Implement configuration parsing and generation
 - [ ] Add file upload/download functionality
@@ -149,6 +164,7 @@ src/components/
 - [ ] System resource detection
 
 ### Phase 4: UI Polish & Testing
+
 - [ ] Implement Framer Motion animations
 - [ ] Responsive design implementation
 - [ ] Add comprehensive test coverage with Vitest
@@ -158,23 +174,27 @@ src/components/
 ## 🔌 Integration Strategy
 
 ### TimescaleDB-Tune CLI Integration
+
 ```javascript
 // API route: /api/tune
-const { spawn } = require('child_process');
+const { spawn } = require('child_process')
 
 function runTuner(options) {
   const args = [
     '--dry-run',
-    '--memory', options.memory,
-    '--cpus', options.cpus,
+    '--memory',
+    options.memory,
+    '--cpus',
+    options.cpus,
     // ... other options
-  ];
-  
-  return spawn('timescaledb-tune', args);
+  ]
+
+  return spawn('timescaledb-tune', args)
 }
 ```
 
 ### Configuration Flow
+
 1. User inputs system specifications
 2. Frontend validates inputs with Zod schemas
 3. API calls timescaledb-tune with formatted parameters
@@ -184,22 +204,26 @@ function runTuner(options) {
 ## 📝 Key Considerations
 
 ### Security
+
 - Input sanitization for all form data
 - File upload restrictions and validation
 - Sandboxed execution of CLI commands
 
 ### Performance
+
 - Client-side validation to reduce API calls
 - Debounced inputs for real-time updates
 - Optimized bundle size with tree shaking
 
 ### User Experience
+
 - Progressive disclosure for advanced options
 - Helpful tooltips and documentation links
 - Keyboard navigation support
 - Loading states and progress indicators
 
 ### Extensibility
+
 - Plugin architecture for custom tuning profiles
 - API endpoints for programmatic access
 - Configuration templates for common setups
@@ -215,11 +239,12 @@ function runTuner(options) {
 ## 🚀 Development Commands
 
 ### Package.json Scripts
+
 ```json
 {
   "scripts": {
     "dev": "next dev",
-    "build": "next build", 
+    "build": "next build",
     "start": "next start",
     "lint": "next lint && npx prettier --check .",
     "lint:fix": "next lint --fix && npx prettier --write .",
@@ -228,13 +253,14 @@ function runTuner(options) {
     "coverage": "vitest run --coverage",
     "type-check": "tsc --noEmit",
     "docker:dev": "docker compose up frontend",
-    "docker:build": "docker compose build frontend", 
+    "docker:build": "docker compose build frontend",
     "docker:down": "docker compose down"
   }
 }
 ```
 
 ### Development Workflow
+
 ```bash
 # Local development
 npm run dev
@@ -261,6 +287,7 @@ npm run start
 ## 🐳 Docker Setup (Coolify Compatible)
 
 ### Dockerfile (Alpine-based like datakolo)
+
 ```dockerfile
 FROM node:alpine AS base
 WORKDIR /app
@@ -288,12 +315,13 @@ CMD ["npm", "start"]
 ```
 
 ### Docker Compose (Development)
+
 ```yaml
 services:
   frontend:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=development
     volumes:
