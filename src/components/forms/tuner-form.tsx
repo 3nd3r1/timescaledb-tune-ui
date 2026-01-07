@@ -144,9 +144,7 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                             className="w-full"
                             disabled={isLoading}
                         >
-                            {isLoading
-                                ? "Generating..."
-                                : "Generate"}
+                            {isLoading ? "Generating..." : "Generate"}
                         </Button>
                     </form>
                 </Form>

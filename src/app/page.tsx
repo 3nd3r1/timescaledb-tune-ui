@@ -13,17 +13,28 @@ export default function Home() {
     const handleFormSubmit = async (data: TunerFormData) => {
         setIsLoading(true);
         try {
-            console.log("Form data:", data);
+            const response = await fetch("/api/tune", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
 
-            // TODO: Implement API call to timescaledb-tune
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+            const result = await response.json();
 
-            setResult(
-                "Configuration generated successfully! (This is a placeholder)"
-            );
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.error || "Failed to generate configuration"
+                );
+            }
+
+            setResult(result.configuration);
         } catch (error) {
             console.error("Error:", error);
-            setResult("Error generating configuration");
+            setResult(
+                `Error: ${error instanceof Error ? error.message : "Unknown error occurred"}`
+            );
         } finally {
             setIsLoading(false);
         }
