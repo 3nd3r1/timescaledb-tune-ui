@@ -177,19 +177,19 @@ src/components/
 
 ```javascript
 // API route: /api/tune
-const { spawn } = require('child_process')
+const { spawn } = require("child_process");
 
 function runTuner(options) {
-  const args = [
-    '--dry-run',
-    '--memory',
-    options.memory,
-    '--cpus',
-    options.cpus,
-    // ... other options
-  ]
+    const args = [
+        "--dry-run",
+        "--memory",
+        options.memory,
+        "--cpus",
+        options.cpus,
+        // ... other options
+    ];
 
-  return spawn('timescaledb-tune', args)
+    return spawn("timescaledb-tune", args);
 }
 ```
 
@@ -242,20 +242,20 @@ function runTuner(options) {
 
 ```json
 {
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint && npx prettier --check .",
-    "lint:fix": "next lint --fix && npx prettier --write .",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "coverage": "vitest run --coverage",
-    "type-check": "tsc --noEmit",
-    "docker:dev": "docker compose up frontend",
-    "docker:build": "docker compose build frontend",
-    "docker:down": "docker compose down"
-  }
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint && npx prettier --check .",
+        "lint:fix": "next lint --fix && npx prettier --write .",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "coverage": "vitest run --coverage",
+        "type-check": "tsc --noEmit",
+        "docker:dev": "docker compose up frontend",
+        "docker:build": "docker compose build frontend",
+        "docker:down": "docker compose down"
+    }
 }
 ```
 
@@ -318,16 +318,16 @@ CMD ["npm", "start"]
 
 ```yaml
 services:
-  frontend:
-    build: .
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: npm run dev
+    frontend:
+        build: .
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=development
+        volumes:
+            - .:/app
+            - /app/node_modules
+        command: npm run dev
 ```
 
 ## 🚀 Deployment Strategy (Coolify)

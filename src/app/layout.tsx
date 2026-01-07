@@ -1,23 +1,25 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import React from 'react'
-import './globals.css'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import React from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'TimescaleDB Tuner',
-  description: 'Optimize your TimescaleDB configuration for better performance',
-}
+    title: "TimescaleDB Tuner",
+    description:
+        "Optimize your TimescaleDB configuration for better performance",
+};
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
+    return (
+        <html lang="en">
+            <body className={inter.className}>{children}</body>
+        </html>
+    );
 }
