@@ -46,3 +46,6 @@ logs/
 
 # Direnv
 .direnv/
+
+# Claude
+.claude/
