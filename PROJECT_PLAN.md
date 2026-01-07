@@ -76,7 +76,6 @@ timescaledb-tuner-ui/
 ├── public/                 # Static assets
 ├── docker-compose.yml      # Development environment
 ├── Dockerfile              # Production container
-├── Makefile               # Development commands
 ├── package.json           # Dependencies and scripts
 ├── next.config.js         # Next.js configuration
 ├── tailwind.config.js     # Tailwind CSS configuration
@@ -132,7 +131,7 @@ src/components/
 - [ ] Configure Tailwind CSS, PostCSS, and TypeScript
 - [ ] Set up shadcn/ui components and Radix UI
 - [ ] Create Docker setup (Dockerfile + docker-compose.yml)
-- [ ] Configure Makefile for development commands
+- [ ] Configure npm scripts for development commands
 - [ ] Set up ESLint, Prettier, and Vitest testing
 
 ### Phase 2: Core Application Structure
@@ -213,41 +212,50 @@ function runTuner(options) {
 - **Accessibility**: WCAG 2.1 AA compliance
 - **Mobile**: Fully functional on mobile devices
 
-## 🚀 Development Commands (Datakolo Style)
+## 🚀 Development Commands
 
-### Makefile Commands
-```makefile
-dev:
-	docker compose up frontend
-
-build:
-	docker compose build frontend
-
-down:
-	docker compose down
-
-test:
-	docker compose exec frontend npm run test
-
-lint:
-	docker compose exec frontend npm run lint
-```
-
-### Package.json Scripts (Matching Datakolo)
+### Package.json Scripts
 ```json
 {
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build", 
     "start": "next start",
     "lint": "next lint && npx prettier --check .",
     "lint:fix": "next lint --fix && npx prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "docker:dev": "docker compose up frontend",
+    "docker:build": "docker compose build frontend", 
+    "docker:down": "docker compose down"
   }
 }
+```
+
+### Development Workflow
+```bash
+# Local development
+npm run dev
+
+# Docker development
+npm run docker:dev
+
+# Testing
+npm run test
+npm run test:watch
+
+# Linting
+npm run lint
+npm run lint:fix
+
+# Type checking
+npm run type-check
+
+# Production build
+npm run build
+npm run start
 ```
 
 ## 🐳 Docker Setup (Coolify Compatible)
@@ -296,10 +304,10 @@ services:
 
 ## 🚀 Deployment Strategy (Coolify)
 
-- **Development**: `make dev` - Docker Compose with hot reload
+- **Development**: `npm run dev` - Local development or `npm run docker:dev` - Docker Compose with hot reload
 - **Production**: Coolify deployment with Docker container
 - **CI/CD**: Automated builds on git push
 - **Environment**: Environment variables via Coolify dashboard
 - **Monitoring**: Built-in Coolify logging and metrics
 
-This plan exactly matches your datakolo project structure and quality standards, ensuring consistency across your projects while targeting Coolify for deployment.
+This plan uses npm scripts for all development tasks, avoiding Makefiles while maintaining the same structure and quality standards as your datakolo project, optimized for Coolify deployment.
