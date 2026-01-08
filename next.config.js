@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     typedRoutes: true,
-    experimental: {
-        optimizeCss: true,
-    },
     compress: true,
     poweredByHeader: false,
     generateEtags: true,
