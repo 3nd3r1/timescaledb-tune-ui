@@ -12,38 +12,45 @@ export async function POST(request: NextRequest) {
         // Validate the input data
         const validatedData = tunerSchema.parse(body);
 
-    // Build the timescaledb-tune command arguments (safe array)
-    const commandArgs = [
-        "--memory",
-        `${validatedData.memory}MB`,
-        "--cpus",
-        validatedData.cpus.toString(),
-        "--pg-version",
-        validatedData.pgVersion,
-        "--conf-path",
-        "/dev/null", // Use dummy path since we only want the output
-        "--out-path",
-        "/tmp/pg.conf", // Output to temporary file
-        "--dry-run", // Always use dry-run for preview
-        "--yes", // Auto-answer prompts
-    ];
+        // Build the timescaledb-tune command arguments (safe array)
+        const commandArgs = [
+            "--memory",
+            `${validatedData.memory}MB`,
+            "--cpus",
+            validatedData.cpus.toString(),
+            "--pg-version",
+            validatedData.pgVersion,
+            "--conf-path",
+            "/dev/null", // Use dummy path since we only want the output
+            "--out-path",
+            "/tmp/pg.conf", // Output to temporary file
+            "--dry-run", // Always use dry-run for preview
+            "--yes", // Auto-answer prompts
+        ];
 
-    // Only add profile if it's not "default" (which is the default behavior)
-    if (validatedData.profile && validatedData.profile !== "default") {
-        commandArgs.push("--profile", validatedData.profile);
-    }
+        // Only add profile if it's not "default" (which is the default behavior)
+        if (validatedData.profile && validatedData.profile !== "default") {
+            commandArgs.push("--profile", validatedData.profile);
+        }
 
-    // Add max connections if specified
-    if (validatedData.maxConnections) {
-        commandArgs.push("--max-conns", validatedData.maxConnections.toString());
-    }
+        // Add max connections if specified
+        if (validatedData.maxConnections) {
+            commandArgs.push(
+                "--max-conns",
+                validatedData.maxConnections.toString()
+            );
+        }
 
         // Execute the command securely
         const execFileAsync = promisify(execFile);
-        const { stdout: output } = await execFileAsync("timescaledb-tune", commandArgs, {
-            encoding: "utf-8",
-            timeout: 10000, // 10 second timeout
-        });
+        const { stdout: output } = await execFileAsync(
+            "timescaledb-tune",
+            commandArgs,
+            {
+                encoding: "utf-8",
+                timeout: 10000, // 10 second timeout
+            }
+        );
 
         return NextResponse.json({
             success: true,
@@ -54,7 +61,7 @@ export async function POST(request: NextRequest) {
         console.error("Error:", error);
 
         // Handle Zod validation errors
-        if (error && typeof error === 'object' && 'issues' in error) {
+        if (error && typeof error === "object" && "issues" in error) {
             return NextResponse.json(
                 {
                     success: false,
@@ -66,8 +73,10 @@ export async function POST(request: NextRequest) {
 
         // Handle command execution errors
         if (error instanceof Error) {
-            if (error.message.includes("command not found") ||
-                error.message.includes("ENOENT")) {
+            if (
+                error.message.includes("command not found") ||
+                error.message.includes("ENOENT")
+            ) {
                 return NextResponse.json(
                     {
                         success: false,

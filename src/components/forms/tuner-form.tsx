@@ -85,9 +85,11 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
             const config = tunerSchema.parse({
                 memory: memoryInMb,
                 cpus: parseInt(formData.cpus),
-                maxConnections: formData.maxConnections && formData.maxConnections.trim() !== "" 
-                    ? parseInt(formData.maxConnections) 
-                    : undefined,
+                maxConnections:
+                    formData.maxConnections &&
+                    formData.maxConnections.trim() !== ""
+                        ? parseInt(formData.maxConnections)
+                        : undefined,
                 profile: formData.profile,
                 pgVersion: formData.pgVersion,
             });
@@ -95,21 +97,25 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
             onSubmit(config);
         } catch (error) {
             // Handle validation errors from tunerSchema
-            if (error && typeof error === 'object' && 'issues' in error) {
+            if (error && typeof error === "object" && "issues" in error) {
                 const zodError = error as z.ZodError;
                 // Set form errors for each validation issue
                 zodError.issues.forEach((issue) => {
                     const fieldName = issue.path[0] as keyof FormInput;
-                    if (fieldName === 'memory' || fieldName === 'cpus' || fieldName === 'maxConnections') {
+                    if (
+                        fieldName === "memory" ||
+                        fieldName === "cpus" ||
+                        fieldName === "maxConnections"
+                    ) {
                         form.setError(fieldName, {
-                            type: 'manual',
+                            type: "manual",
                             message: issue.message,
                         });
                     }
                 });
             } else {
                 // Fallback for unexpected errors
-                console.error('Form submission error:', error);
+                console.error("Form submission error:", error);
             }
         }
     };
@@ -220,7 +226,9 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                             name="maxConnections"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Max Connections (Optional)</FormLabel>
+                                    <FormLabel>
+                                        Max Connections (Optional)
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             placeholder="e.g., 100 (leave empty for auto)"
@@ -231,7 +239,9 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Maximum concurrent connections. Leave empty to use TimescaleDB's recommendation
+                                        Maximum concurrent connections. Leave
+                                        empty to use TimescaleDB&apos;s
+                                        recommendation
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
