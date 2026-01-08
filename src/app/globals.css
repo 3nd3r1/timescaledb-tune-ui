@@ -11,7 +11,7 @@
         --card-foreground: 0 0% 98%; /* Clean White #FAFAFA */
         --popover: 0 0% 6%; /* Dark Card #0F0F0F */
         --popover-foreground: 0 0% 98%; /* Clean White #FAFAFA */
-        --primary: 60 100% 50%; /* Electric Yellow #FFFF00 */
+        --primary: 49.6 80.1% 60.6%; /* TigerData Yellow #EBCF4A */
         --primary-foreground: 0 0% 3%; /* Rich Black #080808 */
         --secondary: 0 0% 15%; /* Medium Dark #262626 */
         --secondary-foreground: 0 0% 98%; /* Clean White #FAFAFA */
@@ -23,7 +23,7 @@
         --destructive-foreground: 0 0% 98%; /* Clean White #FAFAFA */
         --border: 0 0% 15%; /* Medium Dark #262626 */
         --input: 0 0% 8%; /* Subtle Dark #141414 */
-        --ring: 60 100% 50%; /* Electric Yellow #FFFF00 */
+        --ring: 49.6 80.1% 60.6%; /* TigerData Yellow #EBCF4A */
         --radius: 0.375rem;
     }
 
@@ -35,7 +35,7 @@
         --card-foreground: 0 0% 98%; /* Clean White #FAFAFA */
         --popover: 0 0% 6%; /* Dark Card #0F0F0F */
         --popover-foreground: 0 0% 98%; /* Clean White #FAFAFA */
-        --primary: 60 100% 50%; /* Electric Yellow #FFFF00 */
+        --primary: 49.6 80.1% 60.6%; /* TigerData Yellow #EBCF4A */
         --primary-foreground: 0 0% 3%; /* Rich Black #080808 */
         --secondary: 0 0% 15%; /* Medium Dark #262626 */
         --secondary-foreground: 0 0% 98%; /* Clean White #FAFAFA */
@@ -47,7 +47,7 @@
         --destructive-foreground: 0 0% 98%; /* Clean White #FAFAFA */
         --border: 0 0% 15%; /* Medium Dark #262626 */
         --input: 0 0% 8%; /* Subtle Dark #141414 */
-        --ring: 60 100% 50%; /* Electric Yellow #FFFF00 */
+        --ring: 49.6 80.1% 60.6%; /* TigerData Yellow #EBCF4A */
     }
 }
 
@@ -66,11 +66,11 @@
     .glass-card {
         @apply bg-card/80 backdrop-blur-sm border border-border/50;
     }
-    
+
     .input-focus {
         @apply focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:ring-offset-background;
     }
-    
+
     .button-hover {
         @apply transition-all duration-200 ease-in-out;
     }
