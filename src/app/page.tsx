@@ -50,22 +50,30 @@ export default function Home() {
                 </p>
             </div>
 
-            <div className="mb-8">
-                <TunerForm onSubmit={handleFormSubmit} isLoading={isLoading} />
-            </div>
-
-            {result && (
-                <div className="max-w-2xl mx-auto">
-                    <div className="bg-card border rounded-lg p-6">
-                        <h2 className="text-xl font-semibold mb-4">
-                            Configuration Result
-                        </h2>
-                        <pre className="text-sm bg-muted p-4 rounded overflow-auto">
-                            {result}
-                        </pre>
-                    </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <TunerForm onSubmit={handleFormSubmit} isLoading={isLoading} />
                 </div>
-            )}
+
+                <div>
+                    {result ? (
+                        <div className="bg-card border rounded-lg p-6 h-fit">
+                            <h2 className="text-xl font-semibold mb-4">
+                                Configuration Result
+                            </h2>
+                            <pre className="text-sm bg-muted p-4 rounded overflow-auto max-h-96">
+                                {result}
+                            </pre>
+                        </div>
+                    ) : (
+                        <div className="bg-muted border rounded-lg p-6 h-fit flex items-center justify-center text-muted-foreground">
+                            <p className="text-center">
+                                Configuration will appear here after submitting the form
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </div>
         </main>
     );
 }
