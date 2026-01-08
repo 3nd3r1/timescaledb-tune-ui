@@ -4,6 +4,7 @@ import { z } from "zod";
 export const tunerSchema = z.object({
     memory: z.number().min(512, "Memory must be at least 512 MB").max(1048576, "Memory must not exceed 1TB"), // Always in MB
     cpus: z.number().int().min(1, "Must have at least 1 CPU").max(128, "Cannot exceed 128 CPUs"),
+    maxConnections: z.number().int().min(1, "Must allow at least 1 connection").max(10000, "Cannot exceed 10,000 connections").optional(),
     profile: z.enum(["default", "promscale"]),
     pgVersion: z.enum(["11", "12", "13", "14", "15", "16", "17", "18"]),
 });

@@ -33,6 +33,11 @@ export async function POST(request: NextRequest) {
         commandArgs.push("--profile", validatedData.profile);
     }
 
+    // Add max connections if specified
+    if (validatedData.maxConnections) {
+        commandArgs.push("--max-conns", validatedData.maxConnections.toString());
+    }
+
         // Execute the command securely
         const execFileAsync = promisify(execFile);
         const { stdout: output } = await execFileAsync("timescaledb-tune", commandArgs, {

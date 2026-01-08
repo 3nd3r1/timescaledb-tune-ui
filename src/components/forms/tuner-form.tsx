@@ -44,6 +44,13 @@ const formInputSchema = z.object({
         .string()
         .min(1, "CPU count is required")
         .regex(/^\d+$/, "CPU count must be a whole number"),
+    maxConnections: z
+        .string()
+        .optional()
+        .refine((val) => {
+            if (!val || val.trim() === "") return true; // Optional field
+            return /^\d+$/.test(val);
+        }, "Max connections must be a whole number"),
     profile: z.enum(["default", "promscale"]),
     pgVersion: z.enum(["11", "12", "13", "14", "15", "16", "17", "18"]),
 });
@@ -63,6 +70,7 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
         defaultValues: {
             memory: "",
             cpus: "",
+            maxConnections: "",
             profile: "default",
             pgVersion: "15",
         },
@@ -77,6 +85,9 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
             const config = tunerSchema.parse({
                 memory: memoryInMb,
                 cpus: parseInt(formData.cpus),
+                maxConnections: formData.maxConnections && formData.maxConnections.trim() !== "" 
+                    ? parseInt(formData.maxConnections) 
+                    : undefined,
                 profile: formData.profile,
                 pgVersion: formData.pgVersion,
             });
@@ -89,7 +100,7 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                 // Set form errors for each validation issue
                 zodError.issues.forEach((issue) => {
                     const fieldName = issue.path[0] as keyof FormInput;
-                    if (fieldName === 'memory' || fieldName === 'cpus') {
+                    if (fieldName === 'memory' || fieldName === 'cpus' || fieldName === 'maxConnections') {
                         form.setError(fieldName, {
                             type: 'manual',
                             message: issue.message,
@@ -198,6 +209,29 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                                     </FormControl>
                                     <FormDescription>
                                         Number of CPU cores available
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="maxConnections"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Max Connections (Optional)</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="e.g., 100 (leave empty for auto)"
+                                            type="number"
+                                            min="1"
+                                            max="10000"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Maximum concurrent connections. Leave empty to use TimescaleDB's recommendation
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
