@@ -55,46 +55,61 @@ export default function Home() {
     };
 
     return (
-        <main className="container mx-auto px-4 py-8">
-            <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold mb-4">TimescaleDB Tuner</h1>
-                <p className="text-lg text-muted-foreground">
-                    Optimize your TimescaleDB configuration for better
-                    performance
-                </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                    <TunerForm onSubmit={handleFormSubmit} isLoading={isLoading} />
+        <main className="min-h-screen bg-background">
+            <div className="container mx-auto px-6 py-12">
+                <div className="text-center mb-12">
+                    <h1 className="text-5xl font-bold mb-6 tracking-tight">
+                        TimescaleDB <span className="text-primary">Tuner</span>
+                    </h1>
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                        Optimize your TimescaleDB configuration for better performance
+                        with intelligent tuning recommendations
+                    </p>
                 </div>
 
-                <div>
-                    {result ? (
-                        <div className="bg-card border rounded-lg p-6 h-fit">
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-xl font-semibold">
-                                    Configuration Result
-                                </h2>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={handleCopyConfiguration}
-                                >
-                                    {isCopied ? "Copied!" : "Copy Configuration"}
-                                </Button>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+                    <div>
+                        <TunerForm onSubmit={handleFormSubmit} isLoading={isLoading} />
+                    </div>
+
+                    <div>
+                        {result ? (
+                            <div className="glass-card rounded-xl p-6 h-fit">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-2xl font-bold">
+                                        Configuration Result
+                                    </h2>
+                                    <Button
+                                        variant={isCopied ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={handleCopyConfiguration}
+                                        className={isCopied ? "bg-primary text-primary-foreground hover:bg-primary/90 button-hover" : "button-hover"}
+                                    >
+                                        {isCopied ? "Copied!" : "Copy Configuration"}
+                                    </Button>
+                                </div>
+                                <pre className="text-sm bg-muted p-6 rounded-lg overflow-auto border font-mono">
+                                    {result}
+                                </pre>
                             </div>
-                            <pre className="text-sm bg-muted p-4 rounded overflow-auto">
-                                {result}
-                            </pre>
-                        </div>
-                    ) : (
-                        <div className="bg-muted border rounded-lg p-6 h-fit flex items-center justify-center text-muted-foreground">
-                            <p className="text-center">
-                                Configuration will appear here after submitting the form
-                            </p>
-                        </div>
-                    )}
+                        ) : (
+                            <div className="glass-card rounded-xl p-12 h-fit flex items-center justify-center text-muted-foreground">
+                                <div className="text-center">
+                                    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
+                                    <p className="text-lg font-medium">
+                                        Configuration will appear here
+                                    </p>
+                                    <p className="text-sm opacity-70 mt-1">
+                                        Fill out the form to generate optimized settings
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </main>

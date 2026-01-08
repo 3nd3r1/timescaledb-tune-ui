@@ -47,10 +47,10 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
     });
 
     return (
-        <Card className="w-full">
-            <CardHeader>
-                <CardTitle>TimescaleDB Tuning Configuration</CardTitle>
-                <CardDescription>
+        <Card className="w-full glass-card rounded-xl">
+            <CardHeader className="pb-6">
+                <CardTitle className="text-2xl font-bold">System Configuration</CardTitle>
+                <CardDescription className="text-base text-muted-foreground">
                     Configure your system specifications to generate optimized
                     TimescaleDB settings
                 </CardDescription>
@@ -59,7 +59,7 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6"
+                        className="space-y-8"
                     >
                         <FormField
                             control={form.control}
@@ -141,10 +141,10 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
 
                         <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full h-12 text-base font-semibold button-hover"
                             disabled={isLoading}
                         >
-                            {isLoading ? "Generating..." : "Generate"}
+                            {isLoading ? "Generating Configuration..." : "Generate Configuration"}
                         </Button>
                     </form>
                 </Form>

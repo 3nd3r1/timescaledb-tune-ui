@@ -4,48 +4,50 @@
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 222.2 84% 4.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
-        --primary: 221.2 83.2% 53.3%;
-        --primary-foreground: 210 40% 98%;
-        --secondary: 210 40% 96%;
-        --secondary-foreground: 222.2 84% 4.9%;
-        --muted: 210 40% 96%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-        --accent: 210 40% 96%;
-        --accent-foreground: 222.2 84% 4.9%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 221.2 83.2% 53.3%;
-        --radius: 0.5rem;
+        /* TigerData-inspired Dark Theme */
+        --background: 0 0% 3%; /* Rich Black #080808 */
+        --foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --card: 0 0% 6%; /* Dark Card #0F0F0F */
+        --card-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --popover: 0 0% 6%; /* Dark Card #0F0F0F */
+        --popover-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --primary: 60 100% 50%; /* Electric Yellow #FFFF00 */
+        --primary-foreground: 0 0% 3%; /* Rich Black #080808 */
+        --secondary: 0 0% 15%; /* Medium Dark #262626 */
+        --secondary-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --muted: 0 0% 8%; /* Subtle Dark #141414 */
+        --muted-foreground: 0 0% 65%; /* Medium Gray #A6A6A6 */
+        --accent: 0 0% 15%; /* Medium Dark #262626 */
+        --accent-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --destructive: 0 84% 60%; /* Red */
+        --destructive-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --border: 0 0% 15%; /* Medium Dark #262626 */
+        --input: 0 0% 8%; /* Subtle Dark #141414 */
+        --ring: 60 100% 50%; /* Electric Yellow #FFFF00 */
+        --radius: 0.375rem;
     }
 
     .dark {
-        --background: 222.2 84% 4.9%;
-        --foreground: 210 40% 98%;
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
-        --popover: 222.2 84% 4.9%;
-        --popover-foreground: 210 40% 98%;
-        --primary: 217.2 91.2% 59.8%;
-        --primary-foreground: 222.2 84% 4.9%;
-        --secondary: 217.2 32.6% 17.5%;
-        --secondary-foreground: 210 40% 98%;
-        --muted: 217.2 32.6% 17.5%;
-        --muted-foreground: 215 20.2% 65.1%;
-        --accent: 217.2 32.6% 17.5%;
-        --accent-foreground: 210 40% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 217.2 32.6% 17.5%;
-        --input: 217.2 32.6% 17.5%;
-        --ring: 224.3 76.3% 94.1%;
+        /* TigerData-inspired Dark Theme */
+        --background: 0 0% 3%; /* Rich Black #080808 */
+        --foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --card: 0 0% 6%; /* Dark Card #0F0F0F */
+        --card-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --popover: 0 0% 6%; /* Dark Card #0F0F0F */
+        --popover-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --primary: 60 100% 50%; /* Electric Yellow #FFFF00 */
+        --primary-foreground: 0 0% 3%; /* Rich Black #080808 */
+        --secondary: 0 0% 15%; /* Medium Dark #262626 */
+        --secondary-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --muted: 0 0% 8%; /* Subtle Dark #141414 */
+        --muted-foreground: 0 0% 65%; /* Medium Gray #A6A6A6 */
+        --accent: 0 0% 15%; /* Medium Dark #262626 */
+        --accent-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --destructive: 0 84% 60%; /* Red */
+        --destructive-foreground: 0 0% 98%; /* Clean White #FAFAFA */
+        --border: 0 0% 15%; /* Medium Dark #262626 */
+        --input: 0 0% 8%; /* Subtle Dark #141414 */
+        --ring: 60 100% 50%; /* Electric Yellow #FFFF00 */
     }
 }
 
@@ -55,5 +57,22 @@
     }
     body {
         @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
     }
 }
+
+@layer utilities {
+    /* TigerData-inspired enhancements */
+    .glass-card {
+        @apply bg-card/80 backdrop-blur-sm border border-border/50;
+    }
+    
+    .input-focus {
+        @apply focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0 focus-visible:ring-offset-background;
+    }
+    
+    .button-hover {
+        @apply transition-all duration-200 ease-in-out;
+    }
+}
+
