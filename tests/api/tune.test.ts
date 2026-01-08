@@ -1,6 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { POST } from "@/app/api/tune/route";
 import { NextRequest } from "next/server";
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { POST } from "@/app/api/tune/route";
 
 // Mock the entire modules
 vi.mock("child_process");
@@ -43,7 +45,9 @@ describe("/api/tune", () => {
 
         it("handles malformed JSON request", async () => {
             const request = {
-                json: vi.fn().mockRejectedValueOnce(new SyntaxError("Invalid JSON")),
+                json: vi
+                    .fn()
+                    .mockRejectedValueOnce(new SyntaxError("Invalid JSON")),
             } as unknown as NextRequest;
 
             const response = await POST(request);

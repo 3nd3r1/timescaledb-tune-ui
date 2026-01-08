@@ -1,7 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render } from "../utils/test-utils";
+
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { render } from "../utils/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { TunerForm } from "@/components/forms/tuner-form";
 
 describe("TunerForm", () => {
@@ -22,8 +24,12 @@ describe("TunerForm", () => {
         expect(screen.getByLabelText(/cpu cores/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/max connections/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/tuning profile/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/postgresql version/i)).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: /generate configuration/i })).toBeInTheDocument();
+        expect(
+            screen.getByLabelText(/postgresql version/i)
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole("button", { name: /generate configuration/i })
+        ).toBeInTheDocument();
     });
 
     it("shows memory unit toggle buttons", () => {
@@ -41,7 +47,9 @@ describe("TunerForm", () => {
         await user.type(screen.getByLabelText(/cpu cores/i), "8");
         await user.type(screen.getByLabelText(/max connections/i), "200");
 
-        await user.click(screen.getByRole("button", { name: /generate configuration/i }));
+        await user.click(
+            screen.getByRole("button", { name: /generate configuration/i })
+        );
 
         await waitFor(() => {
             expect(mockOnSubmit).toHaveBeenCalledWith({
@@ -64,7 +72,9 @@ describe("TunerForm", () => {
         await user.type(screen.getByLabelText(/memory/i), "2048");
         await user.type(screen.getByLabelText(/cpu cores/i), "4");
 
-        await user.click(screen.getByRole("button", { name: /generate configuration/i }));
+        await user.click(
+            screen.getByRole("button", { name: /generate configuration/i })
+        );
 
         await waitFor(() => {
             expect(mockOnSubmit).toHaveBeenCalledWith({
@@ -85,7 +95,9 @@ describe("TunerForm", () => {
         await user.type(screen.getByLabelText(/cpu cores/i), "4");
         // Leave max connections empty
 
-        await user.click(screen.getByRole("button", { name: /generate configuration/i }));
+        await user.click(
+            screen.getByRole("button", { name: /generate configuration/i })
+        );
 
         await waitFor(() => {
             expect(mockOnSubmit).toHaveBeenCalledWith({
@@ -101,10 +113,11 @@ describe("TunerForm", () => {
     it("shows loading state when isLoading is true", () => {
         render(<TunerForm {...defaultProps} isLoading={true} />);
 
-        const submitButton = screen.getByRole("button", { name: /generating configuration/i });
+        const submitButton = screen.getByRole("button", {
+            name: /generating configuration/i,
+        });
         expect(submitButton).toBeDisabled();
     });
-
 
     it("accepts valid input without errors", async () => {
         const user = userEvent.setup();
@@ -114,7 +127,9 @@ describe("TunerForm", () => {
         await user.type(screen.getByLabelText(/cpu cores/i), "8");
         await user.type(screen.getByLabelText(/max connections/i), "100");
 
-        await user.click(screen.getByRole("button", { name: /generate configuration/i }));
+        await user.click(
+            screen.getByRole("button", { name: /generate configuration/i })
+        );
 
         // Should submit successfully
         await waitFor(() => {

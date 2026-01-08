@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import {
-    tunerSchema,
-    tunerResponseSchema,
-    generateTunerConfig,
     gbToMb,
+    generateTunerConfig,
     mbToGb,
+    tunerResponseSchema,
+    tunerSchema,
 } from "@/lib/tuner";
 
 describe("tuner utility functions", () => {
