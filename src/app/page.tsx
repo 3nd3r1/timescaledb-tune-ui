@@ -61,7 +61,7 @@ export default function Home() {
                             <h2 className="text-xl font-semibold mb-4">
                                 Configuration Result
                             </h2>
-                            <pre className="text-sm bg-muted p-4 rounded overflow-auto max-h-96">
+                            <pre className="text-sm bg-muted p-4 rounded overflow-auto">
                                 {result}
                             </pre>
                         </div>
