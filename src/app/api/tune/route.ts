@@ -51,22 +51,7 @@ export async function POST(request: NextRequest) {
             ) {
                 return NextResponse.json({
                     success: true,
-                    configuration: `# TimescaleDB Configuration Preview
-# Generated for: ${validatedData.memory}GB RAM, ${validatedData.cpus} CPUs, ${validatedData.profile} profile
-
-# Note: timescaledb-tune is not installed on this system.
-# To get actual configuration recommendations, install timescaledb-tune:
-# 
-# Method 1: Download binary from GitHub releases
-# https://github.com/timescale/timescaledb-tune/releases
-#
-# Method 2: Build from source (requires Go)
-# go install github.com/timescale/timescaledb-tune/cmd/timescaledb-tune@latest
-#
-# Sample configuration for your specifications:
-# These are general recommendations - use timescaledb-tune for precise values
-
-# Memory settings
+                    configuration: `
 shared_buffers = ${Math.floor(parseInt(validatedData.memory) * 0.25)}GB
 effective_cache_size = ${Math.floor(parseInt(validatedData.memory) * 0.75)}GB
 maintenance_work_mem = ${Math.min(Math.floor((parseInt(validatedData.memory) * 1024) / 16), 2048)}MB
