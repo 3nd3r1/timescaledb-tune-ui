@@ -16,5 +16,13 @@
     "tabWidth": 4,
     "semi": true,
     "singleQuote": false,
-    "plugins": ["@trivago/prettier-plugin-sort-imports"]
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "overrides": [
+        {
+            "files": ["*.yml", "*.yaml"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }
