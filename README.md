@@ -1,7 +1,7 @@
 # TimescaleDB Tuner UI
 
 <div align="center">
-  <img src="public/logo-nobg-light.svg" alt="TimescaleDB Tuner UI" width="200" height="auto">
+  <img src="public/logo-nobg-dark.svg" alt="TimescaleDB Tuner UI" width="200" height="auto">
 </div>
 
 Web interface for [timescaledb-tune](https://github.com/timescale/timescaledb-tune). Input your system specs, get optimized TimescaleDB config.
@@ -33,7 +33,7 @@ Open http://localhost:3000
 ## Tech
 
 - Next.js 15
-- TypeScript  
+- TypeScript
 - Tailwind CSS
 - shadcn/ui
 
