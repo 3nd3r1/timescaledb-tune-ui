@@ -64,6 +64,10 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
             profile: z.enum(["default", "promscale"], {
                 required_error: "Please select a tuning profile",
             }),
+
+            pgVersion: z.enum(["11", "12", "13", "14", "15", "16", "17", "18"], {
+                required_error: "Please select a PostgreSQL version",
+            }),
         });
     }, []);
 
@@ -73,6 +77,7 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
             memory: "",
             cpus: "",
             profile: "default",
+            pgVersion: "15",
         },
         mode: "onChange",
     });
@@ -225,6 +230,40 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                                     <FormDescription>
                                         Choose the optimization profile for your
                                         use case
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="pgVersion"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>PostgreSQL Version</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select PostgreSQL version" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="11">PostgreSQL 11</SelectItem>
+                                            <SelectItem value="12">PostgreSQL 12</SelectItem>
+                                            <SelectItem value="13">PostgreSQL 13</SelectItem>
+                                            <SelectItem value="14">PostgreSQL 14</SelectItem>
+                                            <SelectItem value="15">PostgreSQL 15</SelectItem>
+                                            <SelectItem value="16">PostgreSQL 16</SelectItem>
+                                            <SelectItem value="17">PostgreSQL 17</SelectItem>
+                                            <SelectItem value="18">PostgreSQL 18</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormDescription>
+                                        Select your PostgreSQL version for optimized settings
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>

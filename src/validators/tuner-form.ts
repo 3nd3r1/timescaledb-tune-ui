@@ -20,6 +20,10 @@ export const tunerFormSchema = z.object({
     profile: z.enum(["default", "promscale"], {
         required_error: "Please select a tuning profile",
     }),
+
+    pgVersion: z.enum(["11", "12", "13", "14", "15", "16", "17", "18"], {
+        required_error: "Please select a PostgreSQL version",
+    }),
 });
 
 export type TunerFormData = z.infer<typeof tunerFormSchema>;
