@@ -16,6 +16,7 @@ Web interface for [timescaledb-tune](https://github.com/timescale/timescaledb-tu
 ## Setup
 
 Docker (recommended):
+
 ```bash
 git clone https://github.com/your-username/timescaledb-tuner-ui.git
 cd timescaledb-tuner-ui
@@ -23,6 +24,7 @@ npm run docker:dev
 ```
 
 Local:
+
 ```bash
 npm install
 npm run dev

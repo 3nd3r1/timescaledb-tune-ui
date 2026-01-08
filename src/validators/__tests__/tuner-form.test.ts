@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-
 import { tunerFormSchema } from "../tuner-form";
+
+import { describe, expect, it } from "vitest";
 
 describe("tunerFormSchema", () => {
     it("validates correct input", () => {
@@ -64,7 +64,9 @@ describe("tunerFormSchema", () => {
         const result = tunerFormSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-            expect(result.error.issues[0].message).toContain("Memory must be a positive number");
+            expect(result.error.issues[0].message).toContain(
+                "Memory must be a positive number"
+            );
         }
     });
 
@@ -78,7 +80,9 @@ describe("tunerFormSchema", () => {
         const result = tunerFormSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-            expect(result.error.issues[0].message).toContain("CPU count must be between 1 and 128");
+            expect(result.error.issues[0].message).toContain(
+                "CPU count must be between 1 and 128"
+            );
         }
     });
 
@@ -92,7 +96,9 @@ describe("tunerFormSchema", () => {
         const result = tunerFormSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-            expect(result.error.issues[0].message).toContain("Invalid enum value");
+            expect(result.error.issues[0].message).toContain(
+                "Invalid enum value"
+            );
         }
     });
 
@@ -117,7 +123,9 @@ describe("tunerFormSchema", () => {
         const result = tunerFormSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-            expect(result.error.issues[0].message).toContain("CPU count must be between 1 and 128");
+            expect(result.error.issues[0].message).toContain(
+                "CPU count must be between 1 and 128"
+            );
         }
     });
 

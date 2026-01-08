@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -76,8 +77,10 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
         mode: "onChange",
     });
 
-
-    const convertMemoryForSubmission = (value: string, unit: "GB" | "MB"): string => {
+    const convertMemoryForSubmission = (
+        value: string,
+        unit: "GB" | "MB"
+    ): string => {
         if (!value) return "";
         const numValue = parseFloat(value);
         if (unit === "MB") {
@@ -85,7 +88,6 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
         }
         return value;
     };
-
 
     const handleFormSubmit = (data: TunerFormData) => {
         const convertedData = {
@@ -98,7 +100,9 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
     return (
         <Card className="w-full glass-card rounded-xl">
             <CardHeader className="pb-6">
-                <CardTitle className="text-2xl font-bold">System Configuration</CardTitle>
+                <CardTitle className="text-2xl font-bold">
+                    System Configuration
+                </CardTitle>
                 <CardDescription className="text-base text-muted-foreground">
                     Configure your system specifications to generate optimized
                     TimescaleDB settings
@@ -116,11 +120,15 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="flex items-center justify-between">
-                                        <FormLabel>Memory ({memoryUnit})</FormLabel>
+                                        <FormLabel>
+                                            Memory ({memoryUnit})
+                                        </FormLabel>
                                         <div className="flex rounded-md border border-border overflow-hidden">
                                             <button
                                                 type="button"
-                                                onClick={() => setMemoryUnit("GB")}
+                                                onClick={() =>
+                                                    setMemoryUnit("GB")
+                                                }
                                                 className={`px-3 py-1 text-sm font-medium transition-colors ${
                                                     memoryUnit === "GB"
                                                         ? "bg-primary text-primary-foreground"
@@ -131,7 +139,9 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                                             </button>
                                             <button
                                                 type="button"
-                                                onClick={() => setMemoryUnit("MB")}
+                                                onClick={() =>
+                                                    setMemoryUnit("MB")
+                                                }
                                                 className={`px-3 py-1 text-sm font-medium transition-colors ${
                                                     memoryUnit === "MB"
                                                         ? "bg-primary text-primary-foreground"
@@ -144,14 +154,21 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                                     </div>
                                     <FormControl>
                                         <Input
-                                            placeholder={memoryUnit === "GB" ? "e.g., 8" : "e.g., 8192"}
+                                            placeholder={
+                                                memoryUnit === "GB"
+                                                    ? "e.g., 8"
+                                                    : "e.g., 8192"
+                                            }
                                             type="number"
                                             min="1"
                                             {...field}
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Total system memory in {memoryUnit === "GB" ? "gigabytes" : "megabytes"}
+                                        Total system memory in{" "}
+                                        {memoryUnit === "GB"
+                                            ? "gigabytes"
+                                            : "megabytes"}
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -219,7 +236,9 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                             className="w-full h-12 text-base font-semibold button-hover"
                             disabled={isLoading}
                         >
-                            {isLoading ? "Generating Configuration..." : "Generate Configuration"}
+                            {isLoading
+                                ? "Generating Configuration..."
+                                : "Generate Configuration"}
                         </Button>
                     </form>
                 </Form>
