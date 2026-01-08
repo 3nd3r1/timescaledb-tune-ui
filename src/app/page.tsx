@@ -5,10 +5,12 @@ import { useState } from "react";
 import type { TunerFormData } from "@/validators/tuner-form";
 
 import { TunerForm } from "@/components/forms/tuner-form";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<string | null>(null);
+    const [isCopied, setIsCopied] = useState(false);
 
     const handleFormSubmit = async (data: TunerFormData) => {
         setIsLoading(true);
@@ -40,6 +42,18 @@ export default function Home() {
         }
     };
 
+    const handleCopyConfiguration = async () => {
+        if (!result) return;
+        
+        try {
+            await navigator.clipboard.writeText(result);
+            setIsCopied(true);
+            setTimeout(() => setIsCopied(false), 2000);
+        } catch (error) {
+            console.error("Failed to copy configuration:", error);
+        }
+    };
+
     return (
         <main className="container mx-auto px-4 py-8">
             <div className="text-center mb-8">
@@ -58,9 +72,18 @@ export default function Home() {
                 <div>
                     {result ? (
                         <div className="bg-card border rounded-lg p-6 h-fit">
-                            <h2 className="text-xl font-semibold mb-4">
-                                Configuration Result
-                            </h2>
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-xl font-semibold">
+                                    Configuration Result
+                                </h2>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleCopyConfiguration}
+                                >
+                                    {isCopied ? "Copied!" : "Copy Configuration"}
+                                </Button>
+                            </div>
                             <pre className="text-sm bg-muted p-4 rounded overflow-auto">
                                 {result}
                             </pre>
