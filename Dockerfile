@@ -1,22 +1,13 @@
-FROM node:alpine AS base
-WORKDIR /app
-# Install Go and build timescaledb-tune from source
-RUN apk add --no-cache go git && \
-    go install github.com/timescale/timescaledb-tune/cmd/timescaledb-tune@latest && \
-    mv /root/go/bin/timescaledb-tune /usr/local/bin/ && \
-    apk del go git && \
-    rm -rf /root/go
-COPY package*.json ./
-RUN npm ci --only=production
-
 FROM node:alpine AS builder
 WORKDIR /app
+
 # Install Go and build timescaledb-tune from source
 RUN apk add --no-cache go git && \
     go install github.com/timescale/timescaledb-tune/cmd/timescaledb-tune@latest && \
     mv /root/go/bin/timescaledb-tune /usr/local/bin/ && \
     apk del go git && \
     rm -rf /root/go
+
 COPY package*.json ./
 RUN npm ci
 COPY . .
@@ -33,6 +24,6 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 USER nextjs
 EXPOSE 3000
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 CMD ["npm", "start"]

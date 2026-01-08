@@ -23,6 +23,8 @@ const eslintConfig = [
             "build/**",
             "next-env.d.ts",
             "*.config.js",
+            "**/*.test.{ts,tsx,js,jsx}",
+            "**/test/**",
         ],
     },
     js.configs.recommended,
