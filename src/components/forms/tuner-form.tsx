@@ -1,9 +1,11 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { type TunerFormData, tunerFormSchema } from "@/validators/tuner-form";
+import { type TunerFormData } from "@/validators/tuner-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -37,14 +39,61 @@ interface TunerFormProps {
 }
 
 export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
+    const [memoryUnit, setMemoryUnit] = useState<"GB" | "MB">("GB");
+
+    // Create dynamic schema based on current units
+    const dynamicSchema = useMemo(() => {
+        return z.object({
+            memory: z
+                .string()
+                .min(1, "Memory is required")
+                .refine((val) => {
+                    const num = parseInt(val);
+                    return !isNaN(num) && num > 0;
+                }, "Memory must be a positive number"),
+
+            cpus: z
+                .string()
+                .min(1, "CPU count is required")
+                .refine((val) => {
+                    const num = parseInt(val);
+                    return !isNaN(num) && num > 0 && num <= 128;
+                }, "CPU cores must be between 1 and 128"),
+
+            profile: z.enum(["default", "promscale"], {
+                required_error: "Please select a tuning profile",
+            }),
+        });
+    }, []);
+
     const form = useForm<TunerFormData>({
-        resolver: zodResolver(tunerFormSchema),
+        resolver: zodResolver(dynamicSchema),
         defaultValues: {
             memory: "",
             cpus: "",
             profile: "default",
         },
+        mode: "onChange",
     });
+
+
+    const convertMemoryForSubmission = (value: string, unit: "GB" | "MB"): string => {
+        if (!value) return "";
+        const numValue = parseFloat(value);
+        if (unit === "MB") {
+            return (numValue / 1024).toString();
+        }
+        return value;
+    };
+
+
+    const handleFormSubmit = (data: TunerFormData) => {
+        const convertedData = {
+            ...data,
+            memory: convertMemoryForSubmission(data.memory, memoryUnit),
+        };
+        onSubmit(convertedData);
+    };
 
     return (
         <Card className="w-full glass-card rounded-xl">
@@ -58,7 +107,7 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
             <CardContent>
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(onSubmit)}
+                        onSubmit={form.handleSubmit(handleFormSubmit)}
                         className="space-y-8"
                     >
                         <FormField
@@ -66,17 +115,43 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                             name="memory"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Memory (GB)</FormLabel>
+                                    <div className="flex items-center justify-between">
+                                        <FormLabel>Memory ({memoryUnit})</FormLabel>
+                                        <div className="flex rounded-md border border-border overflow-hidden">
+                                            <button
+                                                type="button"
+                                                onClick={() => setMemoryUnit("GB")}
+                                                className={`px-3 py-1 text-sm font-medium transition-colors ${
+                                                    memoryUnit === "GB"
+                                                        ? "bg-primary text-primary-foreground"
+                                                        : "bg-background text-foreground hover:bg-muted"
+                                                }`}
+                                            >
+                                                GB
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setMemoryUnit("MB")}
+                                                className={`px-3 py-1 text-sm font-medium transition-colors ${
+                                                    memoryUnit === "MB"
+                                                        ? "bg-primary text-primary-foreground"
+                                                        : "bg-background text-foreground hover:bg-muted"
+                                                }`}
+                                            >
+                                                MB
+                                            </button>
+                                        </div>
+                                    </div>
                                     <FormControl>
                                         <Input
-                                            placeholder="e.g., 8"
+                                            placeholder={memoryUnit === "GB" ? "e.g., 8" : "e.g., 8192"}
                                             type="number"
                                             min="1"
                                             {...field}
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Total system memory in gigabytes
+                                        Total system memory in {memoryUnit === "GB" ? "gigabytes" : "megabytes"}
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
