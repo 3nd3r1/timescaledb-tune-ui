@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import type { TunerFormData } from "@/validators/tuner-form";
+import { generateTunerConfig, type TunerConfig } from "@/lib/tuner";
 
 import { Button } from "@/components/ui/button";
 
@@ -14,26 +14,16 @@ export default function Home() {
     const [result, setResult] = useState<string | null>(null);
     const [isCopied, setIsCopied] = useState(false);
 
-    const handleFormSubmit = async (data: TunerFormData) => {
+    const handleFormSubmit = async (config: TunerConfig) => {
         setIsLoading(true);
         try {
-            const response = await fetch("/api/tune", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
+            const response = await generateTunerConfig(config);
 
-            const result = await response.json();
-
-            if (!response.ok || !result.success) {
-                throw new Error(
-                    result.error || "Failed to generate configuration"
-                );
+            if (response.success) {
+                setResult(response.configuration);
+            } else {
+                setResult(`Error: ${response.error}`);
             }
-
-            setResult(result.configuration);
         } catch (error) {
             console.error("Error:", error);
             setResult(

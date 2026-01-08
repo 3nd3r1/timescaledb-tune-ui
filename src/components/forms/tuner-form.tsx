@@ -1,12 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { type TunerFormData } from "@/validators/tuner-form";
+import { type TunerConfig, gbToMb, tunerSchema } from "@/lib/tuner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,45 +34,32 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
+// Form input schema (strings from form inputs)
+const formInputSchema = z.object({
+    memory: z
+        .string()
+        .min(1, "Memory is required")
+        .regex(/^\d+(\.\d+)?$/, "Memory must be a valid number"),
+    cpus: z
+        .string()
+        .min(1, "CPU count is required")
+        .regex(/^\d+$/, "CPU count must be a whole number"),
+    profile: z.enum(["default", "promscale"]),
+    pgVersion: z.enum(["11", "12", "13", "14", "15", "16", "17", "18"]),
+});
+
+type FormInput = z.infer<typeof formInputSchema>;
+
 interface TunerFormProps {
-    onSubmit: (data: TunerFormData) => void;
+    onSubmit: (data: TunerConfig) => void;
     isLoading?: boolean;
 }
 
 export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
     const [memoryUnit, setMemoryUnit] = useState<"GB" | "MB">("GB");
 
-    // Create dynamic schema based on current units
-    const dynamicSchema = useMemo(() => {
-        return z.object({
-            memory: z
-                .string()
-                .min(1, "Memory is required")
-                .refine((val) => {
-                    const num = parseInt(val);
-                    return !isNaN(num) && num > 0;
-                }, "Memory must be a positive number"),
-
-            cpus: z
-                .string()
-                .min(1, "CPU count is required")
-                .refine((val) => {
-                    const num = parseInt(val);
-                    return !isNaN(num) && num > 0 && num <= 128;
-                }, "CPU cores must be between 1 and 128"),
-
-            profile: z.enum(["default", "promscale"], {
-                required_error: "Please select a tuning profile",
-            }),
-
-            pgVersion: z.enum(["11", "12", "13", "14", "15", "16", "17", "18"], {
-                required_error: "Please select a PostgreSQL version",
-            }),
-        });
-    }, []);
-
-    const form = useForm<TunerFormData>({
-        resolver: zodResolver(dynamicSchema),
+    const form = useForm<FormInput>({
+        resolver: zodResolver(formInputSchema),
         defaultValues: {
             memory: "",
             cpus: "",
@@ -82,24 +69,38 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
         mode: "onChange",
     });
 
-    const convertMemoryForSubmission = (
-        value: string,
-        unit: "GB" | "MB"
-    ): string => {
-        if (!value) return "";
-        const numValue = parseFloat(value);
-        if (unit === "MB") {
-            return (numValue / 1024).toString();
-        }
-        return value;
-    };
+    const handleFormSubmit = (formData: FormInput) => {
+        try {
+            const memory = parseFloat(formData.memory);
+            const memoryInMb = memoryUnit === "GB" ? gbToMb(memory) : memory;
 
-    const handleFormSubmit = (data: TunerFormData) => {
-        const convertedData = {
-            ...data,
-            memory: convertMemoryForSubmission(data.memory, memoryUnit),
-        };
-        onSubmit(convertedData);
+            const config = tunerSchema.parse({
+                memory: memoryInMb,
+                cpus: parseInt(formData.cpus),
+                profile: formData.profile,
+                pgVersion: formData.pgVersion,
+            });
+
+            onSubmit(config);
+        } catch (error) {
+            // Handle validation errors from tunerSchema
+            if (error && typeof error === 'object' && 'issues' in error) {
+                const zodError = error as z.ZodError;
+                // Set form errors for each validation issue
+                zodError.issues.forEach((issue) => {
+                    const fieldName = issue.path[0] as keyof FormInput;
+                    if (fieldName === 'memory' || fieldName === 'cpus') {
+                        form.setError(fieldName, {
+                            type: 'manual',
+                            message: issue.message,
+                        });
+                    }
+                });
+            } else {
+                // Fallback for unexpected errors
+                console.error('Form submission error:', error);
+            }
+        }
     };
 
     return (
@@ -252,18 +253,35 @@ export function TunerForm({ onSubmit, isLoading }: TunerFormProps) {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="11">PostgreSQL 11</SelectItem>
-                                            <SelectItem value="12">PostgreSQL 12</SelectItem>
-                                            <SelectItem value="13">PostgreSQL 13</SelectItem>
-                                            <SelectItem value="14">PostgreSQL 14</SelectItem>
-                                            <SelectItem value="15">PostgreSQL 15</SelectItem>
-                                            <SelectItem value="16">PostgreSQL 16</SelectItem>
-                                            <SelectItem value="17">PostgreSQL 17</SelectItem>
-                                            <SelectItem value="18">PostgreSQL 18</SelectItem>
+                                            <SelectItem value="11">
+                                                PostgreSQL 11
+                                            </SelectItem>
+                                            <SelectItem value="12">
+                                                PostgreSQL 12
+                                            </SelectItem>
+                                            <SelectItem value="13">
+                                                PostgreSQL 13
+                                            </SelectItem>
+                                            <SelectItem value="14">
+                                                PostgreSQL 14
+                                            </SelectItem>
+                                            <SelectItem value="15">
+                                                PostgreSQL 15
+                                            </SelectItem>
+                                            <SelectItem value="16">
+                                                PostgreSQL 16
+                                            </SelectItem>
+                                            <SelectItem value="17">
+                                                PostgreSQL 17
+                                            </SelectItem>
+                                            <SelectItem value="18">
+                                                PostgreSQL 18
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <FormDescription>
-                                        Select your PostgreSQL version for optimized settings
+                                        Select your PostgreSQL version for
+                                        optimized settings
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>

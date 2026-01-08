@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { execSync } from "child_process";
+import { execFile } from "child_process";
+import { promisify } from "util";
 
-import { tunerFormSchema } from "@/validators/tuner-form";
+import { tunerSchema } from "@/lib/tuner";
 
 export async function POST(request: NextRequest) {
-    const body = await request.json();
+    try {
+        const body = await request.json();
 
-    // Validate the input data
-    const validatedData = tunerFormSchema.parse(body);
+        // Validate the input data
+        const validatedData = tunerSchema.parse(body);
 
-    // Build the timescaledb-tune command
-    const commandParts = [
-        "timescaledb-tune",
+    // Build the timescaledb-tune command arguments (safe array)
+    const commandArgs = [
         "--memory",
-        `${validatedData.memory}GB`,
+        `${validatedData.memory}MB`,
         "--cpus",
-        validatedData.cpus,
+        validatedData.cpus.toString(),
         "--pg-version",
         validatedData.pgVersion,
         "--conf-path",
@@ -29,14 +30,12 @@ export async function POST(request: NextRequest) {
 
     // Only add profile if it's not "default" (which is the default behavior)
     if (validatedData.profile && validatedData.profile !== "default") {
-        commandParts.push("--profile", validatedData.profile);
+        commandArgs.push("--profile", validatedData.profile);
     }
 
-    const command = commandParts.join(" ");
-
-    // Execute the command
-    try {
-        const output = execSync(command, {
+        // Execute the command securely
+        const execFileAsync = promisify(execFile);
+        const { stdout: output } = await execFileAsync("timescaledb-tune", commandArgs, {
             encoding: "utf-8",
             timeout: 10000, // 10 second timeout
         });
@@ -44,11 +43,23 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
             success: true,
             configuration: output,
-            command: command,
+            command: `timescaledb-tune ${commandArgs.join(" ")}`,
         });
     } catch (error) {
-        console.error("Error running timescaledb-tune:", error);
+        console.error("Error:", error);
 
+        // Handle Zod validation errors
+        if (error && typeof error === 'object' && 'issues' in error) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Invalid input data provided",
+                },
+                { status: 400 }
+            );
+        }
+
+        // Handle command execution errors
         if (error instanceof Error) {
             if (error.message.includes("command not found") ||
                 error.message.includes("ENOENT")) {
