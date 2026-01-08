@@ -23,16 +23,16 @@ export async function POST(request: NextRequest) {
             "--conf-path",
             "/dev/null", // Use dummy path since we only want the output
             "--out-path",
-            "/tmp/pg.conf", // Output to temporary file 
+            "/tmp/pg.conf", // Output to temporary file
             "--dry-run", // Always use dry-run for preview
             "--yes", // Auto-answer prompts
         ];
-        
+
         // Only add profile if it's not "default" (which is the default behavior)
         if (validatedData.profile && validatedData.profile !== "default") {
             commandParts.push("--profile", validatedData.profile);
         }
-        
+
         const command = commandParts.join(" ");
 
         // Execute the command
@@ -42,11 +42,12 @@ export async function POST(request: NextRequest) {
                 encoding: "utf-8",
                 timeout: 10000, // 10 second timeout
             });
-        } catch (execError: any) {
+        } catch (execError: unknown) {
             // If timescaledb-tune is not installed, provide a helpful message
+            const error = execError as { code?: string; message?: string };
             if (
-                execError.code === "ENOENT" ||
-                execError.message.includes("command not found")
+                error.code === "ENOENT" ||
+                error.message?.includes("command not found")
             ) {
                 return NextResponse.json({
                     success: true,
