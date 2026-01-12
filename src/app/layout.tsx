@@ -11,6 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+    metadataBase: new URL('https://timescaledb-tune.host.ender.fi'),
     title: "TimescaleDB Tuner - Optimize Your Database Performance",
     description:
         "Free web-based tool to optimize TimescaleDB configuration for better performance. Get intelligent tuning recommendations based on your system resources.",
